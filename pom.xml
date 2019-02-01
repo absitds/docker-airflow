@@ -15,14 +15,24 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>default</id>
+                        <id>prepare-image</id>
+                        <phase>package</phase>
                         <goals>
                             <goal>build</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>deploy-image</id>
+                        <phase>install</phase>
+                        <goals>
                             <goal>push</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
+                    <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                    <repository>absitdsdopswusacr001.azurecr.io/com.albertsons.itds/${project.artifactId}</repository>
+                    <contextDirectory>${project.basedir}/src/main/docker</contextDirectory>
                     <tag>${project.version}</tag>
                 </configuration>
             </plugin>
