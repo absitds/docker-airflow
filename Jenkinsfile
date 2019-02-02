@@ -1,10 +1,15 @@
-node {
-  def mvnHome
-  stage('Preparation') { 
-    mvnHome = tool 'M3'
-  }
-  stage('Build') {
-    // Run the maven build
-    sh "'${mvnHome}/bin/mvn' clean install"
-  }
+pipeline {
+    agent {
+        docker {
+            image 'maven:3-alpine' 
+            args '-v /root/.m2:/root/.m2' 
+        }
+    }
+    stages {
+        stage('Build') { 
+            steps {
+                sh 'mvn -B -DskipTests clean package' 
+            }
+        }
+    }
 }
